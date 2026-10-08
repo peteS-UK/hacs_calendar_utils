@@ -4,14 +4,18 @@ from typing import Final
 
 import voluptuous as vol
 
+from homeassistant.components.calendar import MIN_NEW_EVENT_DURATION
+
 from homeassistant.components.calendar import (
-    MIN_NEW_EVENT_DURATION,
-    _as_local_timezone,
-    _empty_as_none,
-    _has_consistent_timezone,
-    _has_min_duration,
-    _has_positive_interval,
+    as_local_timezone,
+    empty_as_none,
+    has_consistent_timezone,
+    has_min_duration
 )
+
+from homeassistant.components.calendar.helper import has_positive_interval as _has_positive_interval
+
+
 from homeassistant.helpers import config_validation as cv
 
 from .const import (
@@ -64,17 +68,17 @@ ENSURE_EVENT_EXISTS_SCHEMA = vol.All(
             ),
         },
     ),
-    _has_consistent_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
-    _as_local_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
-    _has_min_duration(EVENT_START_DATE, EVENT_END_DATE, MIN_NEW_EVENT_DURATION),
-    _has_min_duration(EVENT_START_DATETIME, EVENT_END_DATETIME, MIN_NEW_EVENT_DURATION),
+    has_consistent_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
+    as_local_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
+    has_min_duration(EVENT_START_DATE, EVENT_END_DATE, MIN_NEW_EVENT_DURATION),
+    has_min_duration(EVENT_START_DATETIME, EVENT_END_DATETIME, MIN_NEW_EVENT_DURATION),
 )
 DELETE_EVENT_BY_UID_SERVICE_SCHEMA: Final = vol.All(
     cv.make_entity_service_schema(
         {
             vol.Required(EVENT_UID): cv.string,
             vol.Optional(EVENT_RECURRENCE_ID): vol.Any(
-                vol.All(cv.string, _empty_as_none), None
+                vol.All(cv.string, empty_as_none), None
             ),
             vol.Optional(EVENT_RECURRENCE_RANGE): cv.string,
         }
@@ -110,15 +114,15 @@ UPDATE_EVENT_BY_UID_SERVICE_SCHEMA = vol.All(
                 }
             ),
             vol.Optional(EVENT_RECURRENCE_ID): vol.Any(
-                vol.All(cv.string, _empty_as_none), None
+                vol.All(cv.string, empty_as_none), None
             ),
             vol.Optional(EVENT_RECURRENCE_RANGE): cv.string,
         }
     ),
-    _has_consistent_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
-    _as_local_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
-    _has_min_duration(EVENT_START_DATE, EVENT_END_DATE, MIN_NEW_EVENT_DURATION),
-    _has_min_duration(EVENT_START_DATETIME, EVENT_END_DATETIME, MIN_NEW_EVENT_DURATION),
+    has_consistent_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
+    as_local_timezone(EVENT_START_DATETIME, EVENT_END_DATETIME),
+    has_min_duration(EVENT_START_DATE, EVENT_END_DATE, MIN_NEW_EVENT_DURATION),
+    has_min_duration(EVENT_START_DATETIME, EVENT_END_DATETIME, MIN_NEW_EVENT_DURATION),
 )
 GET_EVENTS_SERVICE_SCHEMA: Final = vol.All(
     cv.has_at_least_one_key(EVENT_END_DATETIME, EVENT_DURATION),

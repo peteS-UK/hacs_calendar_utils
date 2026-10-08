@@ -5,7 +5,8 @@ import dataclasses
 import datetime
 from typing import Any
 
-from homeassistant.components.calendar import CalendarEntity, _event_dict_factory
+from homeassistant.components.calendar import CalendarEntity 
+from homeassistant.components.calendar.helper import event_dict_factory
 from homeassistant.core import ServiceCall
 from homeassistant.util import dt as dt_util
 from homeassistant.util.json import JsonValueType
@@ -41,7 +42,7 @@ def _list_events_dict_factory(
     """Convert CalendarEvent dataclass items to dictionary of attributes."""
     return {
         name: value
-        for name, value in _event_dict_factory(obj).items()
+        for name, value in event_dict_factory(obj).items()
         if name in LIST_EVENT_FIELDS and value is not None
     }
 

@@ -2,9 +2,9 @@
 
 from homeassistant.components.calendar import (
     CONF_EVENT,
-    CalendarEntity,
-    _validate_timespan,
+    CalendarEntity
 )
+from homeassistant.components.calendar.services import _validate_timespan
 from homeassistant.core import ServiceCall, ServiceResponse
 
 from ..const import (
